@@ -6376,9 +6376,9 @@ function loop(now){
   if(S.started && !S.ended && !TOP){ updateVM(dt); renderer.autoClear=false; renderer.clearDepth(); renderer.render(vmScene,vmCam); renderer.autoClear=true; }
 }
 // ===== ゲームパッド =====
-const padPrev={};
+const padPrev={}; let PAD_OK=true;
 function pollPad(dt){
-  const pads=navigator.getGamepads?navigator.getGamepads():[]; const p=pads&&[...pads].find(x=>x&&x.connected); if(!p) return null;
+  let pads=[]; if(PAD_OK){ try{ pads=navigator.getGamepads?navigator.getGamepads():[]; }catch(e){ PAD_OK=false; pads=[]; } } const p=pads&&[...pads].find(x=>x&&x.connected); if(!p) return null;
   const dz=v=>Math.abs(v)<0.18?0:v;
   const btn=i=>p.buttons[i]&&p.buttons[i].pressed;
   const edge=i=>{ const now=btn(i), was=padPrev[i]; padPrev[i]=now; return now&&!was; };
@@ -6795,7 +6795,7 @@ function updateMop(){ if(mop.held){ if(mop.g.parent!==avatar.wrap){ avatar.wrap.
 window.__top={CRATES,mop,splats,custActive};
 
 hideHighStuff();
-{ const lg=document.querySelector('#title .logo small'); if(lg) lg.textContent='俯瞰ステージ版 試作 v0.4'; }
+{ const lg=document.querySelector('#title .logo small'); if(lg) lg.textContent='俯瞰ステージ版 試作 v0.1'; }
 shelves.forEach(s=>{ for(let i=0;i<SLOT_COUNT;i++) if(Math.random()<0.35) addProduct(s,i); });
 rebuildNav();
 updateHUD();
